@@ -1,10 +1,10 @@
 let display = document.querySelector("#scholarsCount");
 gsap.registerEffect({
-  name: "scholarCounter",
+  name: "schoolCounter",
   extendTimeline: true,
   defaults: {
     end: 0,
-    duration: 5,
+    duration: 3,
     ease: "power1",
     increment: 1,
   },
@@ -12,7 +12,12 @@ gsap.registerEffect({
     let tl = gsap.timeline();
     tl.to(targets, {
       duration: config.duration,
-      snap:{innerText:config.increment},
+      modifiers:{
+        innerText:function (innerText) {
+            return gsap.utils.snap(config.increment, innerText).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+      },
+    //   snap:{innerText:config.increment},
       innerText: config.end,
       ease: config.ease
     });
@@ -21,6 +26,9 @@ gsap.registerEffect({
 });
 
 let tl = gsap.timeline() 
-let num = targets[0].innerText.replace(/\,/g,'')
-tragets[0].innerText = num
-tl.scholarCounter(display, {end:1000, increment:5})
+tl.from('#stat2', {opacity:0})
+tl.schoolCounter('#lessonsCount', {end:45, increment: 1}, '-=0.5')
+tl.from('#stat1', {opacity:0})
+tl.schoolCounter(display, {end:1000}, '-=0.5')
+tl.from('#stat3', {opacity:0})
+tl.schoolCounter('#lecturersCount', {end:200, increment:1}, '-=0.5')
